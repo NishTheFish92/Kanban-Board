@@ -18,7 +18,7 @@ def isempty():
 def addrows(x):
     for i in range(x):
         taskname = input("Enter taskname: ")
-        status = input("Enter status (To-do,Inprogress,Done): ")
+        status = input("Enter status (To-do,In-progress,Done): ")
         priority = int(input("Enter priority rank (1 highest,3 lowest): "))
         reportee = input("Enter reportee: ")
         assignee = input("Enter assignee: ")
@@ -33,7 +33,7 @@ def displaykanban():
         #Print entire Kanban table
         print(PrettyTable(["To-Do"]))
         ptable = PrettyTable(["Taskname","Priority","Reportee","Assignee"])
-        cursor.execute("select Taskname,Priority,Reportee,Assignee from Kanban_table where Status ='Todo' order by Priority")
+        cursor.execute("select Taskname,Priority,Reportee,Assignee from Kanban_table where Status ='To-do' order by Priority")
         data = cursor.fetchall()
         if(data):
             for a,b,c,d in data:
@@ -45,7 +45,7 @@ def displaykanban():
 
         print(PrettyTable(["In-Progress"]))
         ptable = PrettyTable(["Taskname","Priority","Reportee","Assignee"])
-        cursor.execute("select Taskname,Priority,Reportee,Assignee from Kanban_table where Status ='Inprogress' order by Priority")
+        cursor.execute("select Taskname,Priority,Reportee,Assignee from Kanban_table where Status ='In-progress' order by Priority")
         data = cursor.fetchall()
         if(data):
             for a,b,c,d in data:
@@ -54,7 +54,7 @@ def displaykanban():
         else:
             print("Empty")
         print("\n")
-        
+
         print(PrettyTable(["Done"]))
         ptable = PrettyTable(["Taskname","Priority","Reportee","Assignee"])
         cursor.execute("select Taskname,Priority,Reportee,Assignee from Kanban_table where Status ='Done' order by Priority")
@@ -66,7 +66,24 @@ def displaykanban():
         else:
             print("Empty")
 
+def main():
+    while(True):
+        print("1.View Kanban\n2.Add tasks\n3.Move tasks\n4.Delete task\n5.Quit")
+        inp = int(input("Enter a choice corresponding to number: "))
+        if(inp==1):
+            displaykanban()
+        if(inp==2):
+            addrows(1)
+        if(inp==3):
+            inp = 2
+        if(inp==4):
+            inp = 3
+        if(inp==5):
+            mycon.commit()
+            mycon.close()
+            quit()
+
+
 initialization()
-displaykanban()
-mycon.commit()
-mycon.close()
+main()
+

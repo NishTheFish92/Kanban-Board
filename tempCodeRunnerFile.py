@@ -1,1 +1,0 @@
-INSERT INTO Kanban_Table (Taskname,Status,Priority, Reportee, Assignee) VALUES ({},{},{},{},{})
