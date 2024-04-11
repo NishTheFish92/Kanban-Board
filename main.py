@@ -1,5 +1,6 @@
 import mysql.connector as sqltor
 from prettytable import PrettyTable
+import time
 mycon = sqltor.connect(host ='localhost',user = 'root',passwd = 'root@123')
 cursor = mycon.cursor()
 def initialization():
@@ -31,7 +32,7 @@ def displaykanban():
         addrows(rows)
     else:
         #Print entire Kanban table
-        print(PrettyTable(["To-Do"]))
+        print("________𝗧𝗢-𝗗𝗢________")
         ptable = PrettyTable(["Taskname","Priority","Reportee","Assignee"])
         cursor.execute("select Taskname,Priority,Reportee,Assignee from Kanban_table where Status ='To-do' order by Priority")
         data = cursor.fetchall()
@@ -40,10 +41,10 @@ def displaykanban():
                 ptable.add_row([a,b,c,d])
             print(ptable)
         else:
-            print("Empty")
-        print("\n")
+            print("-----Empty-----")
+        
 
-        print(PrettyTable(["In-Progress"]))
+        print("________𝗜𝗡-𝗣𝗥𝗢𝗚𝗥𝗘𝗦𝗦________")
         ptable = PrettyTable(["Taskname","Priority","Reportee","Assignee"])
         cursor.execute("select Taskname,Priority,Reportee,Assignee from Kanban_table where Status ='In-progress' order by Priority")
         data = cursor.fetchall()
@@ -52,10 +53,9 @@ def displaykanban():
                 ptable.add_row([a,b,c,d])
             print(ptable)
         else:
-            print("Empty")
-        print("\n")
+            print("-----Empty-----")
 
-        print(PrettyTable(["Done"]))
+        print("________𝗗𝗢𝗡𝗘________")
         ptable = PrettyTable(["Taskname","Priority","Reportee","Assignee"])
         cursor.execute("select Taskname,Priority,Reportee,Assignee from Kanban_table where Status ='Done' order by Priority")
         data = cursor.fetchall()
@@ -64,21 +64,35 @@ def displaykanban():
                 ptable.add_row([a,b,c,d])
             print(ptable)
         else:
-            print("Empty")
-
+            print("-----Empty-----")
+        print("\n\n")
 def main():
+    #HIT ZERO TO RESET THE PROGRAM
     while(True):
+        time.sleep(0.5)
         print("1.View Kanban\n2.Add tasks\n3.Move tasks\n4.Delete task\n5.Quit")
         inp = int(input("Enter a choice corresponding to number: "))
-        if(inp==1):
+        if(inp==0):
+            c = input("Confirm reset (y/n): ")
+            if(c=='y'):
+                cursor.execute("drop table Kanban_table")
+                cursor.execute("drop database kanban")
+                mycon.commit()
+                mycon.close()
+                print("__________RESET__________")
+                quit()
+                
+            else:
+                continue
+        elif(inp==1):
             displaykanban()
-        if(inp==2):
+        elif(inp==2):
             addrows(1)
-        if(inp==3):
+        elif(inp==3):
             inp = 2
-        if(inp==4):
+        elif(inp==4):
             inp = 3
-        if(inp==5):
+        elif(inp==5):
             mycon.commit()
             mycon.close()
             quit()
