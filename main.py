@@ -29,12 +29,13 @@ def addrows(x):
 
 def displaykanban():
     if isempty():
-        print("No tasks present,Please add some tasks.")
-        rows = int(input("How many tasks would you like to add?"))
-        addrows(rows)
+        choice = input("No tasks present,Would you like to add some?(y/n) ")
+        if choice=='y':
+            rows = int(input("How many tasks would you like to add?"))
+            addrows(rows)
     else:
         #Print entire Kanban table
-        print("________𝗧𝗢-𝗗𝗢________")
+        print(Fore.RED+"________𝗧𝗢-𝗗𝗢________")
         ptable = PrettyTable(["Taskname","Priority","Reportee","Assignee"])
         cursor.execute("select Taskname,Priority,Reportee,Assignee from Kanban_table where Status ='To-do' order by Priority")
         data = cursor.fetchall()
@@ -46,7 +47,7 @@ def displaykanban():
             print("-----Empty-----")
         
 
-        print("________𝗜𝗡-𝗣𝗥𝗢𝗚𝗥𝗘𝗦𝗦________")
+        print(Fore.YELLOW+"________𝗜𝗡-𝗣𝗥𝗢𝗚𝗥𝗘𝗦𝗦________")
         ptable = PrettyTable(["Taskname","Priority","Reportee","Assignee"])
         cursor.execute("select Taskname,Priority,Reportee,Assignee from Kanban_table where Status ='In-progress' order by Priority")
         data = cursor.fetchall()
@@ -57,7 +58,7 @@ def displaykanban():
         else:
             print("-----Empty-----") 
 
-        print("________𝗗𝗢𝗡𝗘________")
+        print(Fore.GREEN+"________𝗗𝗢𝗡𝗘________")
         ptable = PrettyTable(["Taskname","Priority","Reportee","Assignee"])
         cursor.execute("select Taskname,Priority,Reportee,Assignee from Kanban_table where Status ='Done' order by Priority")
         data = cursor.fetchall()
@@ -67,7 +68,6 @@ def displaykanban():
             print(ptable)
         else:
             print("-----Empty-----")
-        print("\n\n")
 
 def movetask():
     task = input("Enter task name: ")
@@ -76,7 +76,7 @@ def movetask():
     mycon.commit()
 
 def deltask():
-    task = input("Enter task name")
+    task = input("Enter task name: ")
     confirm = input("Confirm deletion (y/n): ")
     if (confirm=='y'):
         cursor.execute("delete from kanban_table where taskname = '{}' ".format(task))
@@ -87,16 +87,17 @@ def main():
     while(True):
         time.sleep(0.5)
         print("\n")
-        print("1.View Kanban\n2.Add tasks\n3.Move tasks\n4.Delete task\n5.Quit")
-        inp = int(input("Enter a choice corresponding to number: "))
+        print(Fore.LIGHTMAGENTA_EX+"1.View Kanban\n2.Add task\n3.Move tasks\n4.Delete task\n5.Quit")
+        inp = int(input(Fore.LIGHTYELLOW_EX+"Enter a choice corresponding to number: "))
         if(inp==0):
-            c = input("Confirm reset (y/n): ")
+            c = input(Fore.RED+"Confirm reset (y/n): ")
             if(c=='y'):
                 cursor.execute("drop table Kanban_table")
                 cursor.execute("drop database kanban")
                 mycon.commit()
                 mycon.close()
                 print("__________RESET__________")
+                print(Fore.WHITE)
                 quit()
                 
             else:
@@ -116,10 +117,11 @@ def main():
         elif(inp==5):
             mycon.commit()
             mycon.close()
+            print(Fore.WHITE)
             quit()
 
 
-#initialization()
-#main()
+initialization()
+main()
 
 
