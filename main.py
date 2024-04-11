@@ -18,11 +18,11 @@ def isempty():
 def addrows(x):
     for i in range(x):
         taskname = input("Enter taskname: ")
-        status = input("Enter status (To-do,In-progress,Done): ")
+        status = input("Enter status (To-do,Inprogress,Done): ")
         priority = int(input("Enter priority rank (1 highest,3 lowest): "))
         reportee = input("Enter reportee: ")
         assignee = input("Enter assignee: ")
-        cursor.execute("INSERT INTO Kanban_Table (Taskname,Status,Priority, Reportee, Assignee) VALUES ({},{},{},{},{})".format(taskname,status,priority,reportee,assignee))
+        cursor.execute("INSERT INTO Kanban_Table (Taskname,Status,Priority, Reportee, Assignee) VALUES ('{}','{}',{},'{}','{}');".format(taskname,status,priority,reportee,assignee))
 
 def displaykanban():
     if isempty():
@@ -33,23 +33,40 @@ def displaykanban():
         #Print entire Kanban table
         print(PrettyTable(["To-Do"]))
         ptable = PrettyTable(["Taskname","Priority","Reportee","Assignee"])
-        cursor.execute("select Taskname,Priority,Reportee,Assignee from Kanban_table where Status ='To-Do'")
+        cursor.execute("select Taskname,Priority,Reportee,Assignee from Kanban_table where Status ='Todo' order by Priority")
         data = cursor.fetchall()
-        for a,b,c,d in data:
-            ptable.add_row([a,b,c,d])
-        
+        if(data):
+            for a,b,c,d in data:
+                ptable.add_row([a,b,c,d])
+            print(ptable)
+        else:
+            print("Empty")
+        print("\n")
+
         print(PrettyTable(["In-Progress"]))
         ptable = PrettyTable(["Taskname","Priority","Reportee","Assignee"])
-        cursor.execute("select Taskname,Priority,Reportee,Assignee from Kanban_table where Status ='In-Progress'")
+        cursor.execute("select Taskname,Priority,Reportee,Assignee from Kanban_table where Status ='Inprogress' order by Priority")
         data = cursor.fetchall()
-        for a,b,c,d in data:
-            ptable.add_row([a,b,c,d])
+        if(data):
+            for a,b,c,d in data:
+                ptable.add_row([a,b,c,d])
+            print(ptable)
+        else:
+            print("Empty")
+        print("\n")
         
         print(PrettyTable(["Done"]))
         ptable = PrettyTable(["Taskname","Priority","Reportee","Assignee"])
-        cursor.execute("select Taskname,Priority,Reportee,Assignee from Kanban_table where Status ='Done'")
+        cursor.execute("select Taskname,Priority,Reportee,Assignee from Kanban_table where Status ='Done' order by Priority")
         data = cursor.fetchall()
-        for a,b,c,d in data:
-            ptable.add_row([a,b,c,d])
-        
+        if(data):
+            for a,b,c,d in data:
+                ptable.add_row([a,b,c,d])
+            print(ptable)
+        else:
+            print("Empty")
+
+initialization()
+displaykanban()
+mycon.commit()
 mycon.close()
