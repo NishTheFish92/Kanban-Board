@@ -1,6 +1,8 @@
 import mysql.connector as sqltor
 from prettytable import PrettyTable
 import time
+from colorama import Fore
+
 mycon = sqltor.connect(host ='localhost',user = 'root',passwd = 'root@123')
 cursor = mycon.cursor()
 def initialization():
@@ -53,7 +55,7 @@ def displaykanban():
                 ptable.add_row([a,b,c,d])
             print(ptable)
         else:
-            print("-----Empty-----")
+            print("-----Empty-----") 
 
         print("________𝗗𝗢𝗡𝗘________")
         ptable = PrettyTable(["Taskname","Priority","Reportee","Assignee"])
@@ -66,10 +68,25 @@ def displaykanban():
         else:
             print("-----Empty-----")
         print("\n\n")
+
+def movetask():
+    task = input("Enter task name: ")
+    movelocation = input("Enter new status of task (To-do,In-progress,Done): ")
+    cursor.execute("update kanban_table set status = '{}' where taskname = '{}'".format(movelocation,task))
+    mycon.commit()
+
+def deltask():
+    task = input("Enter task name")
+    confirm = input("Confirm deletion (y/n): ")
+    if (confirm=='y'):
+        cursor.execute("delete from kanban_table where taskname = '{}' ".format(task))
+        mycon.commit()
+
 def main():
     #HIT ZERO TO RESET THE PROGRAM
     while(True):
         time.sleep(0.5)
+        print("\n")
         print("1.View Kanban\n2.Add tasks\n3.Move tasks\n4.Delete task\n5.Quit")
         inp = int(input("Enter a choice corresponding to number: "))
         if(inp==0):
@@ -86,18 +103,23 @@ def main():
                 continue
         elif(inp==1):
             displaykanban()
+
         elif(inp==2):
             addrows(1)
+
         elif(inp==3):
-            inp = 2
+            movetask()
+
         elif(inp==4):
-            inp = 3
+            deltask()
+            
         elif(inp==5):
             mycon.commit()
             mycon.close()
             quit()
 
 
-initialization()
-main()
+#initialization()
+#main()
+
 
