@@ -4,7 +4,7 @@ from kanban import *
 def main():
 
     while(True):
-        
+
         showmenu()
         inp = int(input(Fore.LIGHTYELLOW_EX+"Enter a choice corresponding to number: "))
 
@@ -29,5 +29,3 @@ def main():
 
 initialization()
 main()
-
-
