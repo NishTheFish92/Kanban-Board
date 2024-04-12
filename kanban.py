@@ -76,10 +76,11 @@ def movetask():
 
 def deltask():
     task = input("Enter task name: ")
-    confirm = input("Confirm deletion (y/n): ")
+    confirm = input(Fore.RED+"Confirm deletion (y/n): ")
     if (confirm=='y'):
         cursor.execute("delete from kanban_table where taskname = '{}' ".format(task))
         mycon.commit()
+        print(Fore.LIGHTYELLOW_EX)
 
 def reset():
     c = input(Fore.RED+"Confirm reset (y/n): ")
@@ -95,5 +96,6 @@ def reset():
 def quitkanban():
     mycon.commit()
     mycon.close()
+    print(Fore.RED+"Exiting...")
     print(Fore.WHITE)
     quit()
