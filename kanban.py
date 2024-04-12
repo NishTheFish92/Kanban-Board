@@ -1,14 +1,13 @@
-import mysql.connector as sqltor
+from init import *
 from prettytable import PrettyTable
-import time
 from colorama import Fore
+import time
 
-mycon = sqltor.connect(host ='localhost',user = 'root',passwd = 'root@123')
-cursor = mycon.cursor()
-def initialization():
-    cursor.execute("create database IF NOT EXISTS Kanban")
-    cursor.execute("use Kanban")
-    cursor.execute("CREATE TABLE IF NOT EXISTS Kanban_Table (Taskname VARCHAR(255),Status VARCHAR(50),Priority INT,Reportee VARCHAR(100),Assignee VARCHAR(100));")
+def showmenu():
+    time.sleep(0.5)
+    print("\n")
+    print(Fore.LIGHTMAGENTA_EX+"1.View Kanban\n2.Add task\n3.Move tasks\n4.Delete task\n5.Quit")
+    
 
 def isempty():
     cursor.execute("select * from Kanban_Table;")
@@ -82,46 +81,19 @@ def deltask():
         cursor.execute("delete from kanban_table where taskname = '{}' ".format(task))
         mycon.commit()
 
-def main():
-    #HIT ZERO TO RESET THE PROGRAM
-    while(True):
-        time.sleep(0.5)
-        print("\n")
-        print(Fore.LIGHTMAGENTA_EX+"1.View Kanban\n2.Add task\n3.Move tasks\n4.Delete task\n5.Quit")
-        inp = int(input(Fore.LIGHTYELLOW_EX+"Enter a choice corresponding to number: "))
-        if(inp==0):
-            c = input(Fore.RED+"Confirm reset (y/n): ")
-            if(c=='y'):
-                cursor.execute("drop table Kanban_table")
-                cursor.execute("drop database kanban")
-                mycon.commit()
-                mycon.close()
-                print("__________RESET__________")
-                print(Fore.WHITE)
-                quit()
-                
-            else:
-                continue
-        elif(inp==1):
-            displaykanban()
+def reset():
+    c = input(Fore.RED+"Confirm reset (y/n): ")
+    if(c=='y'):
+        cursor.execute("drop table Kanban_table")
+        cursor.execute("drop database kanban")
+        mycon.commit()
+        mycon.close()
+        print("__________RESET__________")
+        print(Fore.WHITE)
+        quit()
 
-        elif(inp==2):
-            addrows(1)
-
-        elif(inp==3):
-            movetask()
-
-        elif(inp==4):
-            deltask()
-            
-        elif(inp==5):
-            mycon.commit()
-            mycon.close()
-            print(Fore.WHITE)
-            quit()
-
-
-initialization()
-main()
-
-
+def quitkanban():
+    mycon.commit()
+    mycon.close()
+    print(Fore.WHITE)
+    quit()
