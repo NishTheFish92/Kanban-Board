@@ -53,15 +53,7 @@ def displaykanban():
         show_tasks("In-Progress")
 
         print(Fore.GREEN+"________𝗗𝗢𝗡𝗘________")
-        ptable = PrettyTable(["Taskname","Priority","Reportee","Assignee"])
-        cursor.execute("select Taskname,Priority,Reportee,Assignee from Kanban_table where Status ='Done' order by Priority")
-        data = cursor.fetchall()
-        if(data):
-            for a,b,c,d in data:
-                ptable.add_row([a,b,c,d])
-            print(ptable)
-        else:
-            print("-----Empty-----")
+        show_tasks("Done")
 
 def movetask():
     if not isempty():
