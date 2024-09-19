@@ -1,5 +1,5 @@
 # Kanban board
-Trying to impliment a kanban board using python
+Basic Kanban Board implementation using Python (Menu based program)
 
 ## Incomplete tasks:
 1. Multiple project support
